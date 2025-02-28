@@ -40,23 +40,12 @@ if 'lang' in data.columns:
     print("\nLabel Distribution:")
     print(data['lang'].value_counts())
 
-# Чтобы мы могли выделить данные по их типу и их отобразить, можно использовать сортировку 
-num_cols = data.select_dtypes(include='object').columns
+# Столбцы которые являются строки 
+string_cols = data.select_dtypes(include='object').columns
+print("Столбцы со строковым типом данных:", list(string_cols))
 
-if len(num_cols) == 0:
-    print("No numeric columns to visualize.")
-elif len(num_cols) == 1:
-    # If only one numeric column, plot a histogram
-    col = num_cols[0]
-    plt.hist(data[col].dropna(), bins='auto', edgecolor='black')
-    plt.title(f"Distribution of {col}")
-    plt.show()
-else:
-    # If multiple numeric columns, show a correlation matrix
-    corr = data[num_cols].corr()
-    plt.imshow(corr, cmap='coolwarm', vmin=-1, vmax=1)
-    plt.colorbar()
-    plt.xticks(range(len(num_cols)), num_cols, rotation=90)
-    plt.yticks(range(len(num_cols)), num_cols)
-    plt.title("Correlation Matrix")
-    plt.show()
+
+# Уникальных значений в каждом строковом столбце
+for col in string_cols:
+    print(f"\nСтолбец: {col}")
+    print("Уникальные значения:", data[col].unique()[:5]) 
